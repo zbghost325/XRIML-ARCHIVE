@@ -64,6 +64,10 @@ function initLibrary() {
 function initDocument() {
   var select = document.querySelector("[data-xa-jump]");
   if (!select) return;
+  if (!document.querySelector(".xg-doc section.page")) {
+    select.closest(".xa-jump").style.display = "none";  // documents without numbered pages
+    return;
+  }
   document.querySelectorAll(".xg-doc section.page").forEach(function (page) {
     var no = page.querySelector(".pageno");
     var title = page.querySelector(".ptitle");

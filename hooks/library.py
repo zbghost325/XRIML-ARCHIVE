@@ -59,7 +59,8 @@ def _render(page):
         href = get_relative_url(d["url"], page.url)
         meta = [f"<span>Updated {escape(shown)}</span>"] if shown else []
         if d.get("pages"):
-            meta.append(f"<span>{int(d['pages'])} pages</span>")
+            n = int(d["pages"])
+            meta.append(f"<span>{n} page{'s' if n != 1 else ''}</span>")
         cards.append(f"""
 <a class="xa-card" href="{escape(href)}" data-cat="{escape(cat)}" data-tags="{escape('|'.join(dtags))}"
    data-text="{escape(haystack)}" data-title="{escape(title.lower())}" data-updated="{escape(iso)}">

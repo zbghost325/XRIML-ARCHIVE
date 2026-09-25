@@ -15,7 +15,7 @@
       <div class="xa-docmeta">
         {% if m.updated %}<span>Last Updated: {{ m.updated.strftime("%m-%d-%Y") if m.updated.strftime else m.updated }}</span>{% endif %}
         {% if m.software %}<span>{{ m.software }}</span>{% endif %}
-        {% if m.pages %}<span>{{ m.pages }} pages</span>{% endif %}
+        {% if m.pages %}<span>{{ m.pages }} page{{ "s" if m.pages != 1 }}</span>{% endif %}
       </div>
       {% include "partials/tags.html" %}
       <div class="xa-doctools">
@@ -29,7 +29,8 @@
         </span>
       </div>
     </header>
-    <article class="xg-doc">
+    {% if m.stylesheet %}<link rel="stylesheet" href="{{ m.stylesheet }}">{% endif %}
+    <article class="xg-doc{% if not m.stylesheet %} xg-guide{% endif %}">
       {{ page.content }}
     </article>
   </div>

@@ -18,12 +18,12 @@ _TEMPLATE = """<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
 <style>
+{css}
 html{{scroll-behavior:smooth}}
 body{{margin:0}}
-{css}
 </style>
 </head>
-<body class="xg-doc">
+<body class="{body_class}">
 {body}
 </body>
 </html>
@@ -48,11 +48,15 @@ def on_page_content(html, page, config, files):
         return f'{m.group(1)}data:{mime};base64,{data}"'
 
     body = re.sub(r'(<img\b[^>]*?\bsrc=")(images/[^"]+)"', inline, html)
-    with open(os.path.join(config["docs_dir"], "stylesheets", "guide.css"), encoding="utf-8") as fh:
+    own = page.meta.get("stylesheet")
+    css_path = os.path.join(src_dir, own) if own else os.path.join(config["docs_dir"], "stylesheets", "guide.css")
+    with open(css_path, encoding="utf-8") as fh:
         css = fh.read()
 
     out = os.path.join(os.path.dirname(page.file.abs_dest_path), name)
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w", encoding="utf-8") as fh:
-        fh.write(_TEMPLATE.format(title=escape(page.title or name), css=css, body=body))
+        fh.write(_TEMPLATE.format(
+            title=escape(page.title or name), css=css, body=body,
+            body_class="xg-doc" if own else "xg-doc xg-guide"))
     return html

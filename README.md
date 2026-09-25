@@ -21,6 +21,14 @@ Export the guide as a single standalone `.html` file (images embedded), then:
 python3 tools/import_html.py ~/Downloads/my-guide.html --slug my-guide --category "Quick Start Guides" --tags "Unity, Meta Quest 3"
 ```
 
+Note: `~` already means your home folder, so use `~/Downloads/...`
+(not `~/Users/<you>/Downloads/...`). Pick a descriptive `--slug`; it becomes the
+page URL. Use `--title "..."` to override the title read from the file.
+
+Guides in the standard format (`<section class="page">` pages) use the shared
+`guide.css`. Any other design keeps its own CSS, scoped automatically into
+`docs/documents/<slug>/style.css` (front matter `stylesheet: style.css`).
+
 This creates `docs/documents/my-guide/` and the document shows up in the
 library and in search automatically. No nav edits needed. Run it again with the
 same slug to replace a document with a newer version.
@@ -70,7 +78,7 @@ This is also the format a future in-browser editor would read and write.
 ## Layout
 
 ```
-docs/documents/<slug>/   one folder per document (index.md + images/)
+docs/documents/<slug>/   one folder per document (index.md + images/, style.css if it has its own design)
 docs/resource-guide/     equipment pages copied from the XRIML Wiki
 docs/stylesheets/        extra.css (Wiki theme), guide.css (document look), archive.css (library UI)
 hooks/library.py         builds the library cards from front matter

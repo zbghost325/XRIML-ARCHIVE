@@ -8,7 +8,8 @@
 
 What it does:
   * pulls embedded base64 images out into docs/documents/<slug>/images/
-  * drops the <head>/<style> (the shared look lives in stylesheets/guide.css)
+  * standard guides (<section class="page">) use the shared stylesheets/guide.css;
+    any other design keeps its own CSS, scoped into docs/documents/<slug>/style.css
   * gives every heading an id so search results jump straight to the step
   * turns the cover-page index ("- Page 4") into clickable links
   * writes docs/documents/<slug>/index.md with front matter the library reads
@@ -103,6 +104,39 @@ def link_index(body):
         body, flags=re.S)
 
 
+def scope_css(css, scope='.xg-doc'):
+    """Prefix every selector with `scope` so a document's own styles can't leak
+    into the site. html/body/:root become the scope itself."""
+    css = re.sub(r'/\*.*?\*/', '', css, flags=re.S)
+    out, i = [], 0
+    while True:
+        m = re.compile(r'\s*([^{}]+)\{').match(css, i)
+        if not m:
+            break
+        head, depth, k = m.group(1).strip(), 1, m.end()
+        while depth and k < len(css):
+            depth += {'{': 1, '}': -1}.get(css[k], 0)
+            k += 1
+        inner = css[m.end():k - 1]
+        if head.startswith(('@media', '@supports')):
+            out.append(f'{head}{{\n{scope_css(inner, scope)}\n}}')
+        elif head.startswith('@'):
+            out.append(f'{head}{{{inner}}}')  # @page, @font-face, @keyframes: leave as-is
+        else:
+            sels = []
+            for sel in head.split(','):
+                sel = re.sub(r'^(?:html|body|:root)(?=$|[\s.#:\[>])', scope, sel.strip())
+                if sel == '*':
+                    sel = f'{scope}, {scope} *'
+                elif not sel.startswith(scope):
+                    sel = f'{scope} {sel}'
+                if sel not in sels:
+                    sels.append(sel)
+            out.append(f"{', '.join(sels)}{{{inner.strip()}}}")
+        i = k
+    return '\n'.join(out)
+
+
 def parse_date(text):
     for fmt in ('%m/%d/%Y', '%m-%d-%Y', '%Y-%m-%d'):
         try:
@@ -122,18 +156,44 @@ def main():
     ap.add_argument('--description', help='defaults to the cover page "Additional Notes"')
     args = ap.parse_args()
 
-    src = args.source.expanduser().read_text(encoding='utf-8')
+    source = args.source.expanduser()
+    if not source.is_file():
+        hint = ''
+        home = str(Path.home())
+        if str(source).startswith(home + home) or str(source).startswith(home + '/Users/'):
+            hint = '\n  "~" already means your home folder - use ~/Downloads/..., not ~/Users/<you>/Downloads/...'
+        sys.exit(f'File not found: {source}{hint}')
+    src = source.read_text(encoding='utf-8')
     out_dir = DOCS / args.slug
 
     cover = re.search(r'<h1 class="cover-title">(.*?)</h1>', src, re.S)
     cover = plain(re.sub(r'<br\s*/?>', ' — ', cover.group(1))) if cover else ''
+    if not cover:
+        h1 = re.search(r'<h1\b[^>]*>(.*?)</h1>\s*(?:<p class="sub">(.*?)</p>)?', src, re.S)
+        if h1:
+            cover = plain(h1.group(1)) + (' — ' + plain(h1.group(2)) if h1.group(2) else '')
     title = args.title or cover or first(r'<title>(.*?)</title>', src) or args.slug
     title = re.sub(r'\s*[-–|]\s*XRIML Guide\s*$', '', title)
     description = args.description or first(
-        r'Additional Notes:\s*</div>\s*<div class="val">(.*?)</div>', src)
+        r'Additional Notes:\s*</div>\s*<div class="val">(.*?)</div>', src) or first(
+        r'<p class="intro">(.*?)</p>', src)
     software = first(r'<span class="uver">(.*?)</span>', src)
     version = first(r'XRIML Versioning:\s*</div>\s*<div class="val">(.*?)</div>', src)
     updated = parse_date(version) if version else ''
+
+    own_style = '<section class="page"' not in src
+    if own_style:
+        css = '\n'.join(re.findall(r'<style\b[^>]*>(.*?)</style>', src, re.S | re.I))
+        out_dir.mkdir(parents=True, exist_ok=True)
+        fonts = ''.join(f'@import url("{html.unescape(href)}");\n' for href in re.findall(
+            r'<link\b[^>]*href="(https://fonts\.googleapis\.com/[^"]+)"[^>]*rel="stylesheet"|'
+            r'<link\b[^>]*rel="stylesheet"[^>]*href="(https://fonts\.googleapis\.com/[^"]+)"', src)
+            for href in href if href)
+        (out_dir / 'style.css').write_text(
+            fonts + '/* This document\'s own design, scoped by tools/import_html.py */\n' + scope_css(css) + '\n',
+            encoding='utf-8')
+    elif (out_dir / 'style.css').exists():
+        (out_dir / 'style.css').unlink()
 
     body = re.sub(r'<!DOCTYPE[^>]*>|</?(html|head|body)\b[^>]*>|<meta\b[^>]*>|<link\b[^>]*>', '', src, flags=re.I)
     body = re.sub(r'<(title|style|script)\b.*?</\1>', '', body, flags=re.S | re.I)
@@ -141,7 +201,7 @@ def main():
     body = add_heading_ids(body)
     body = link_index(body)
     body = body.strip()
-    pages = len(re.findall(r'<section class="page"', body))
+    pages = len(re.findall(r'<section class="page"|class="sheet"', body))
 
     tags = [t.strip() for t in args.tags.split(',') if t.strip()]
     fm = ['---', f'title: {yaml_str(title)}', f'description: {yaml_str(description)}',
@@ -153,13 +213,18 @@ def main():
     if updated:
         fm.append(f'updated: {updated}')
     fm.append(f'pages: {pages}')
-    fm.append(f'source: {yaml_str(args.source.name)}')
+    if own_style:
+        fm.append('stylesheet: style.css')
+    fm.append(f'source: {yaml_str(source.name)}')
     fm.append('tags:' + ('' if tags else ' []'))
     fm += [f'  - {yaml_str(t)}' for t in tags]
     fm += ['hide:', '  - navigation', '  - toc', '---', '']
 
     (out_dir / 'index.md').write_text('\n'.join(fm) + body + '\n', encoding='utf-8')
-    print(f'Wrote {out_dir.relative_to(ROOT)}/index.md  ({pages} pages, {n_images} images)')
+    style = 'its own design (style.css)' if own_style else 'the shared guide style'
+    print(f'Wrote {out_dir.relative_to(ROOT)}/index.md  ({pages} pages, {n_images} images, {style})')
+    if own_style:
+        return
     used = {c for attr in re.findall(r'class="([^"]+)"', body) for c in attr.split()}
     unknown = sorted(used - known_classes())
     if unknown:
