@@ -9,6 +9,9 @@ Includes a copy of the Wiki's Resource Guide.
 - **Library** (home page): filter by collection, tag, or text; sort by date or title.
 - **Documents** keep their original print-style look (paper pages, red step
   timeline, callouts) and still print or save to PDF page by page.
+- **Download HTML**: each document offers a self-contained `.html` copy
+  (styles inlined, images embedded) that opens offline, generated at build time
+  by `hooks/download.py`.
 
 ## Adding a document
 
@@ -71,6 +74,7 @@ docs/documents/<slug>/   one folder per document (index.md + images/)
 docs/resource-guide/     equipment pages copied from the XRIML Wiki
 docs/stylesheets/        extra.css (Wiki theme), guide.css (document look), archive.css (library UI)
 hooks/library.py         builds the library cards from front matter
+hooks/download.py        writes the standalone "Download HTML" copy of each document
 overrides/document.html  page layout for documents
 tools/import_html.py     standalone HTML -> archive document
 ```

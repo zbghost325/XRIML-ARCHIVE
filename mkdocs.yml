@@ -54,6 +54,7 @@ validation:
 
 hooks:
   - hooks/library.py
+  - hooks/download.py
 
 plugins:
   - search

@@ -102,11 +102,13 @@
 .xa-docmeta { display: flex; flex-wrap: wrap; gap: .3rem 1rem; font-size: .7rem; color: var(--md-default-fg-color--light); }
 .xa-docmeta span + span::before { content: "·"; margin-right: 1rem; }
 .xa-dochead .md-tags { margin: .6rem 0 0; }
-.xa-doctools { display: flex; align-items: center; gap: .6rem; margin-top: .7rem; }
-.xa-doctools .print-btn { margin-left: auto; }
+.xa-doctools { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin-top: .7rem; }
+.xa-actions { display: flex; gap: .5rem; margin-left: auto; }
+.md-typeset .xa-actions .print-btn { margin-left: 0; white-space: nowrap; color: var(--md-default-fg-color--light); }
+.md-typeset .xa-actions .print-btn:hover { color: var(--md-primary-fg-color); }
 .xa-jump { display: inline-flex; align-items: center; gap: .4rem; font-size: .7rem; font-weight: 700; color: var(--md-default-fg-color--light); }
 .xa-jump select {
-  font: inherit; font-weight: 400; max-width: 22rem; color: var(--md-default-fg-color);
+  font: inherit; font-weight: 400; max-width: min(22rem, 60vw); color: var(--md-default-fg-color);
   background: var(--md-code-bg-color); border: 1.5px solid var(--md-default-fg-color--lightest); border-radius: 4px; padding: .3rem .4rem;
 }
 

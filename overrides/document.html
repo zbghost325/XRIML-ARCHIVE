@@ -23,7 +23,10 @@
           <span>Jump to</span>
           <select data-xa-jump aria-label="Jump to page"><option value="">Page…</option></select>
         </label>
-        <button class="print-btn" type="button" onclick="window.print()">&#x1F5A8;&#xFE0F; Print / Save PDF</button>
+        <span class="xa-actions">
+          {% if m.download %}<a class="print-btn" href="{{ m.download }}" download>&#x2B07;&#xFE0F; Download HTML</a>{% endif %}
+          <button class="print-btn" type="button" onclick="window.print()">&#x1F5A8;&#xFE0F; Print / Save PDF</button>
+        </span>
       </div>
     </header>
     <article class="xg-doc">
