@@ -1,0 +1,115 @@
+/* Archive-specific UI: library page + document page header.
+   Colours come from extra.css (cloned from the XRIML Wiki). */
+
+:root { --xa-red: #D41B2C; --xa-ink: #161616; }
+
+/* ── Home hero ── */
+.xa-hero {
+  text-align: center;
+  padding: 1.6rem 1rem 1.2rem;
+  margin: 0 0 1rem;
+  border-bottom: 3px solid var(--md-default-fg-color);
+}
+.xa-hero h1 { margin: 0 0 .3rem; font-weight: 900; letter-spacing: -.01em; color: var(--md-default-fg-color); }
+.xa-hero h1 .r { color: var(--xa-red); }
+.xa-hero p { margin: 0 auto .9rem; max-width: 36rem; color: var(--md-default-fg-color--light); }
+
+.xa-searchbtn {
+  display: flex; align-items: center; gap: .6rem;
+  width: 100%; max-width: 32rem; margin: 0 auto;
+  padding: .7rem 1rem;
+  border: 2px solid var(--xa-red); border-radius: 999px;
+  background: var(--md-default-bg-color); color: var(--md-default-fg-color--light);
+  font: inherit; font-size: .8rem; text-align: left; cursor: text;
+  transition: box-shadow .2s;
+}
+.xa-searchbtn:hover { box-shadow: 0 0 0 4px rgba(212, 27, 44, .15); }
+.xa-searchbtn svg { width: 1.1rem; height: 1.1rem; fill: var(--xa-red); flex: none; }
+.xa-searchbtn kbd { margin-left: auto; font-size: .65rem; }
+.xa-try { margin-top: .7rem; font-size: .7rem; color: var(--md-default-fg-color--light); }
+.xa-try button {
+  border: 0; background: none; padding: 0 .2rem; font: inherit; cursor: pointer;
+  color: var(--xa-red); text-decoration: underline; text-underline-offset: 2px;
+}
+
+/* ── Library controls ── */
+.xa-stats { display: flex; justify-content: center; gap: 1.6rem; margin: .4rem 0 1rem; font-size: .75rem; color: var(--md-default-fg-color--light); }
+.xa-stats b { color: var(--xa-red); font-size: 1rem; font-weight: 900; margin-right: .15rem; }
+
+.xa-controls { display: grid; gap: .6rem; margin-bottom: .6rem; }
+.xa-filter { display: flex; gap: .5rem; }
+.xa-filter input, .xa-filter select {
+  font: inherit; font-size: .75rem; color: var(--md-default-fg-color);
+  background: var(--md-code-bg-color); border: 1.5px solid var(--md-default-fg-color--lightest);
+  border-radius: 6px; padding: .45rem .7rem;
+}
+.xa-filter input { flex: 1; min-width: 0; }
+.xa-filter input:focus, .xa-filter select:focus { outline: none; border-color: var(--xa-red); }
+
+.xa-chips, .xa-tags { display: flex; flex-wrap: wrap; gap: .35rem; }
+.xa-chip, .xa-tag {
+  font: inherit; cursor: pointer; border-radius: 999px; transition: all .15s;
+  border: 1.5px solid var(--md-default-fg-color--lightest); background: transparent; color: var(--md-default-fg-color);
+}
+.xa-chip { font-size: .72rem; font-weight: 700; padding: .25rem .8rem; }
+.xa-tag { font-size: .62rem; font-weight: 600; padding: .12rem .55rem; color: var(--md-default-fg-color--light); }
+.xa-chip:hover, .xa-tag:hover { border-color: var(--xa-red); color: var(--xa-red); }
+.xa-chip.is-on, .xa-tag.is-on { background: var(--xa-red); border-color: var(--xa-red); color: #fff; }
+
+.xa-count { font-size: .68rem; color: var(--md-default-fg-color--light); margin: .2rem 0 .6rem !important; }
+.xa-empty { text-align: center; padding: 2rem 1rem; color: var(--md-default-fg-color--light); }
+
+/* ── Document cards: a mini version of a guide page ── */
+.xa-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
+.md-typeset a.xa-card {
+  position: relative; display: flex; flex-direction: column;
+  min-height: 300px; background: #fff; color: var(--xa-ink);
+  font-family: 'Lato', system-ui, sans-serif;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .12); border-radius: 3px; overflow: hidden;
+  transition: transform .15s, box-shadow .15s;
+}
+.md-typeset a.xa-card:hover { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(0, 0, 0, .18); }
+.md-typeset a.xa-card[hidden] { display: none; }
+.xa-card__band, .xa-card__foot {
+  display: flex; align-items: center; justify-content: space-between;
+  background: #000; color: #fff; font-size: .55rem; font-weight: 700; letter-spacing: .05em;
+  padding: .35rem .7rem; opacity: .95;
+}
+.xa-card__foot { margin-top: auto; font-weight: 900; }
+.xa-card__body { display: flex; flex-direction: column; padding: .9rem 1rem .8rem; flex: 1; }
+.xa-card__cat { font-size: .55rem; font-weight: 900; letter-spacing: .09em; text-transform: uppercase; color: var(--xa-red); }
+.xa-card__title { font-weight: 900; font-size: .9rem; line-height: 1.2; margin-top: .3rem; }
+.xa-card__rule { height: 3px; width: 55%; background: #000; border-radius: 2px; margin: .6rem 0; }
+.xa-card__desc {
+  font-size: .64rem; line-height: 1.5; color: #444;
+  display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden;
+}
+.xa-card__tags { display: flex; flex-wrap: wrap; gap: .25rem; margin-top: .7rem; }
+.xa-card__tags span {
+  font-size: .52rem; font-weight: 700; padding: .1rem .45rem; border-radius: 999px;
+  background: #FBEDEE; color: #b0121f; border: 1px solid #ecb6bd;
+}
+
+/* ── Document page ── */
+.xa-docpage { max-width: none; }
+.xa-dochead {
+  max-width: 850px; margin: 1rem auto .6rem; padding: 0 12px;
+}
+.md-typeset .xa-back { font-size: .7rem; font-weight: 700; color: var(--md-default-fg-color--light); }
+.md-typeset .xa-back:hover { color: var(--xa-red); }
+.xa-kicker { margin-top: .8rem; font-size: .6rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: var(--xa-red); }
+.md-typeset h1.xa-doctitle { margin: .15rem 0 .4rem; font-weight: 900; font-size: 1.5rem; line-height: 1.15; color: var(--md-default-fg-color); }
+.xa-docmeta { display: flex; flex-wrap: wrap; gap: .3rem 1rem; font-size: .7rem; color: var(--md-default-fg-color--light); }
+.xa-docmeta span + span::before { content: "·"; margin-right: 1rem; }
+.xa-dochead .md-tags { margin: .6rem 0 0; }
+.xa-doctools { display: flex; align-items: center; gap: .6rem; margin-top: .7rem; }
+.xa-doctools .print-btn { margin-left: auto; }
+.xa-jump { display: inline-flex; align-items: center; gap: .4rem; font-size: .7rem; font-weight: 700; color: var(--md-default-fg-color--light); }
+.xa-jump select {
+  font: inherit; font-weight: 400; max-width: 22rem; color: var(--md-default-fg-color);
+  background: var(--md-code-bg-color); border: 1.5px solid var(--md-default-fg-color--lightest); border-radius: 4px; padding: .3rem .4rem;
+}
+
+@media print {
+  .xa-dochead { display: none !important; }
+}

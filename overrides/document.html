@@ -1,0 +1,33 @@
+{#-
+  Layout for archive documents (front matter: template: document.html).
+  The guide renders outside .md-typeset so Material's typography can't
+  restyle it; the header above it uses the normal site look.
+-#}
+{% extends "main.html" %}
+
+{% block container %}
+  {% set m = page.meta %}
+  <div class="md-content xa-docpage" data-md-component="content">
+    <header class="md-typeset xa-dochead">
+      <a class="xa-back" href="{{ config.extra.library_url | url }}">&larr; Back to the Archive</a>
+      {% if m.category %}<div class="xa-kicker">{{ m.category }}</div>{% endif %}
+      <h1 class="xa-doctitle">{{ page.title }}</h1>
+      <div class="xa-docmeta">
+        {% if m.updated %}<span>Last Updated: {{ m.updated.strftime("%m-%d-%Y") if m.updated.strftime else m.updated }}</span>{% endif %}
+        {% if m.software %}<span>{{ m.software }}</span>{% endif %}
+        {% if m.pages %}<span>{{ m.pages }} pages</span>{% endif %}
+      </div>
+      {% include "partials/tags.html" %}
+      <div class="xa-doctools">
+        <label class="xa-jump">
+          <span>Jump to</span>
+          <select data-xa-jump aria-label="Jump to page"><option value="">Page…</option></select>
+        </label>
+        <button class="print-btn" type="button" onclick="window.print()">&#x1F5A8;&#xFE0F; Print / Save PDF</button>
+      </div>
+    </header>
+    <article class="xg-doc">
+      {{ page.content }}
+    </article>
+  </div>
+{% endblock %}

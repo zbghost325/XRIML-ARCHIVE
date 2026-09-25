@@ -1,0 +1,334 @@
+:root,
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color: #C8102E !important;
+  --md-primary-fg-color--light: #D64550 !important;
+  --md-primary-fg-color--dark: #A00D24 !important;
+  --md-accent-fg-color: #A4804A !important;
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #C8102E !important;
+  --md-accent-fg-color: #A4804A !important;
+}
+
+.md-header {
+  background-color: #C8102E !important;
+}
+
+.md-header__button.md-logo img {
+  height: auto;
+  width: 400px;
+}
+
+/* ── Page metadata banner (version date + tags) ── */
+.page-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  padding: 0.6rem 0.8rem;
+  border-left: 4px solid var(--md-primary-fg-color);
+  background: var(--md-code-bg-color);
+  border-radius: 0 4px 4px 0;
+  font-size: 0.82rem;
+}
+
+.page-meta .meta-date {
+  color: var(--md-default-fg-color--light);
+  margin-right: 0.75rem;
+  white-space: nowrap;
+}
+
+/* Tag badges */
+.page-meta .tag {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: var(--md-primary-fg-color);
+  color: #fff;
+}
+
+/* Keralia Training — special accent tag */
+.page-meta .tag.tag-keralia {
+  background: linear-gradient(135deg, #A4804A, #C8A85C);
+  color: #fff;
+  border: 1.5px solid #8A6A3A;
+  box-shadow: 0 1px 3px rgba(164, 128, 74, 0.3);
+}
+
+/* ── Equipment icon badges ── */
+.icon-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  background: var(--md-code-bg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.icon-legend .legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+}
+
+/* Inline icon badges used in tables and lists */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+.badge-checkout {
+  background: #E8F5E9;
+  color: #2E7D32;
+  border: 1px solid #A5D6A7;
+}
+
+[data-md-color-scheme="slate"] .badge-checkout {
+  background: #1B3A1E;
+  color: #81C784;
+  border-color: #2E7D32;
+}
+
+.badge-standalone {
+  background: #E8EAF6;
+  color: #3949AB;
+  border: 1px solid #9FA8DA;
+}
+
+[data-md-color-scheme="slate"] .badge-standalone {
+  background: #1A237E33;
+  color: #7986CB;
+  border-color: #3949AB;
+}
+
+.badge-pcvr {
+  background: #E0F2F1;
+  color: #00695C;
+  border: 1px solid #80CBC4;
+}
+
+[data-md-color-scheme="slate"] .badge-pcvr {
+  background: #004D4033;
+  color: #4DB6AC;
+  border-color: #00695C;
+}
+
+/* ── Resource guide category grid ── */
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.resource-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  background: var(--md-code-bg-color);
+  text-decoration: none !important;
+  color: var(--md-default-fg-color) !important;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.resource-card:hover {
+  border-color: var(--md-primary-fg-color);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.resource-card .card-icon {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.resource-card .card-label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.resource-card .card-desc {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--md-default-fg-color--light);
+  margin-top: 0.15rem;
+}
+
+/* ── Training duration badge ── */
+.badge-duration {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 1rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: #FFF3E0;
+  color: #E65100;
+  border: 1.5px solid #FFB74D;
+  white-space: nowrap;
+}
+
+[data-md-color-scheme="slate"] .badge-duration {
+  background: #3E2723;
+  color: #FFB74D;
+  border-color: #E65100;
+}
+
+/* Training header block */
+.training-header {
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #A4804A;
+  background: var(--md-code-bg-color);
+  border-radius: 0 6px 6px 0;
+}
+
+.training-header .training-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+.training-header .training-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.82rem;
+  color: var(--md-default-fg-color--light);
+}
+
+/* MkDocs Material tags plugin built-in tag styling */
+[data-md-color-scheme] .md-tag {
+  font-weight: 600;
+}
+
+/* ── Print button ── */
+.print-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.85rem;
+  border: 1.5px solid var(--md-default-fg-color--lightest);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  margin-left: auto;
+}
+
+.print-btn:hover {
+  border-color: var(--md-primary-fg-color);
+  color: var(--md-primary-fg-color);
+}
+
+/* ── Print styles ── */
+@media print {
+  /* Hide site chrome */
+  .md-header,
+  .md-tabs,
+  .md-sidebar,
+  .md-footer,
+  .md-search,
+  .md-top,
+  .md-source,
+  .md-dialog {
+    display: none !important;
+  }
+
+  /* Hide tags rendered by the tags plugin */
+  .md-tags {
+    display: none !important;
+  }
+
+  /* Hide elements marked no-print */
+  .no-print,
+  .print-btn {
+    display: none !important;
+  }
+
+  /* Hide "Related Resources" and other tip/info admonitions at page bottom */
+  .admonition.tip,
+  .admonition.info,
+  .admonition.note {
+    display: none !important;
+  }
+
+  /* Full width content */
+  .md-content {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .md-main__inner {
+    margin: 0 !important;
+  }
+
+  .md-grid {
+    max-width: 100% !important;
+  }
+
+  /* Clean up training header for print */
+  .training-header {
+    border-left: 3px solid #A4804A;
+    background: #f9f6f1 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .badge-duration {
+    background: #FFF3E0 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .tag.tag-keralia {
+    background: #A4804A !important;
+    color: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Keep page breaks clean */
+  h2, h3 {
+    break-after: avoid;
+  }
+
+  pre, table {
+    break-inside: avoid;
+  }
+}
+
+/* Keralia Training tag in the tags index */
+a[href*="Keralia"],
+.md-tag[href*="Keralia"] {
+  background: linear-gradient(135deg, #A4804A, #C8A85C) !important;
+  color: #fff !important;
+  border: 1.5px solid #8A6A3A;
+}

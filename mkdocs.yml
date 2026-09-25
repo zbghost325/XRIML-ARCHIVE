@@ -1,0 +1,81 @@
+site_name: XRIML Archive
+site_description: XR Immersive Media Lab document archive
+site_author: CAMD - Northeastern University
+site_url: https://zbghost325.github.io/XRIML-ARCHIVE/
+
+theme:
+  name: material
+  custom_dir: overrides
+  logo: images/logo.png
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.tabs.link
+
+extra:
+  library_url: index.md
+
+nav:
+  - Archive: index.md
+  - Resource Guide:
+      - Overview: resource-guide/overview.md
+      - VR Headsets: resource-guide/vr-headsets.md
+      - AR Headsets: resource-guide/ar-headsets.md
+      - MR Headsets: resource-guide/mr-headsets.md
+      - XR Accessories: resource-guide/xr-accessories.md
+      - 360 Cameras: resource-guide/360-cameras.md
+      - 360 Accessories: resource-guide/360-accessories.md
+      - Motion Capture: resource-guide/motion-capture.md
+      - Volumetric Video Capture: resource-guide/volumetric-capture.md
+      - Computers: resource-guide/workstations.md
+      - Displays: resource-guide/displays.md
+      - Software: resource-guide/software.md
+      - Legacy: resource-guide/legacy.md
+  - Tags: tags.md
+  - XRIML Wiki: https://zbghost325.github.io/XRIML-WIKI/
+
+# Documents under docs/documents/ are listed by the library, not the nav.
+validation:
+  nav:
+    omitted_files: ignore
+
+hooks:
+  - hooks/library.py
+
+plugins:
+  - search
+  - tags
+
+markdown_extensions:
+  - admonition
+  - tables
+  - attr_list
+  - md_in_html
+  - pymdownx.superfences
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - toc:
+      permalink: true
+  - meta
+
+extra_css:
+  - stylesheets/extra.css
+  - stylesheets/guide.css
+  - stylesheets/archive.css
+
+extra_javascript:
+  - javascripts/archive.js
