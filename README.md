@@ -21,6 +21,16 @@ Export the guide as a single standalone `.html` file (images embedded), then:
 python3 tools/import_html.py ~/Downloads/my-guide.html --slug my-guide --category "Quick Start Guides" --tags "Unity, Meta Quest 3"
 ```
 
+To combine several files into one document (e.g. the front and back of a
+double-sided sheet), list them in order:
+
+```bash
+python3 tools/import_html.py ~/Downloads/page1.html ~/Downloads/page2.html --slug my-sheet --category "Troubleshooting"
+```
+
+Style blocks shared by every file apply to the whole document; blocks that differ
+are scoped to their own page, so one page's styles can't change another.
+
 Note: `~` already means your home folder, so use `~/Downloads/...`
 (not `~/Users/<you>/Downloads/...`). Pick a descriptive `--slug`; it becomes the
 page URL. Use `--title "..."` to override the title read from the file.

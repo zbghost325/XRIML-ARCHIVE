@@ -112,28 +112,50 @@
 .xg-doc{background:#fff;padding:0;}
 .xg-doc .sheet{box-shadow:none;border:0;width:100%;min-height:auto;}
 }
-.xg-doc .navstrip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
-.xg-doc .navstrip figure{position:relative;margin:0;background:var(--panel);border:1px solid var(--panel-line);
+.xg-doc .xg-part-1 .navstrip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.xg-doc .xg-part-1 .navstrip figure{position:relative;margin:0;background:var(--panel);border:1px solid var(--panel-line);
      border-radius:10px;padding:8px 8px 7px;display:flex;flex-direction:column;gap:6px;}
-.xg-doc .navstrip img{width:100%;height:82px;object-fit:cover;object-position:bottom;background:#f4f5f7;border-radius:6px;border:1px solid #e3e6ea;}
-.xg-doc .navstrip .badge{position:absolute;top:-9px;left:-9px;width:22px;height:22px;border-radius:50%;background:var(--red);
+.xg-doc .xg-part-1 .navstrip img{width:100%;height:82px;object-fit:cover;object-position:bottom;background:#f4f5f7;border-radius:6px;border:1px solid #e3e6ea;}
+.xg-doc .xg-part-1 .navstrip .badge{position:absolute;top:-9px;left:-9px;width:22px;height:22px;border-radius:50%;background:var(--red);
      color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;}
-.xg-doc .navstrip figcaption{font-size:10.2px;line-height:1.25;color:#333;text-align:center;}
-.xg-doc .navstrip figcaption b{color:#000;}
-.xg-doc .setfig{margin:0;position:relative;}
-.xg-doc .setfig img{width:100%;height:auto;border-radius:7px;border:1px solid #d8dbe0;display:block;}
-.xg-doc .setfig .badge{position:absolute;top:-8px;left:-8px;width:22px;height:22px;border-radius:50%;background:var(--red);
+.xg-doc .xg-part-1 .navstrip figcaption{font-size:10.2px;line-height:1.25;color:#333;text-align:center;}
+.xg-doc .xg-part-1 .navstrip figcaption b{color:#000;}
+.xg-doc .xg-part-1 .setfig{margin:0;position:relative;}
+.xg-doc .xg-part-1 .setfig img{width:100%;height:auto;border-radius:7px;border:1px solid #d8dbe0;display:block;}
+.xg-doc .xg-part-1 .setfig .badge{position:absolute;top:-8px;left:-8px;width:22px;height:22px;border-radius:50%;background:var(--red);
      color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;z-index:2;}
-.xg-doc .setfig figcaption{font-size:11px;line-height:1.28;color:#222;margin-top:3px;font-weight:700;}
-.xg-doc .setfig figcaption .v{color:var(--red);font-weight:800;}
-.xg-doc .dtwin img{width:100%;height:auto;border-radius:8px;border:1px solid #d8dbe0;display:block;}
-.xg-doc .iconfig{margin:0;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;}
-.xg-doc .iconfig img{width:78px;height:auto;border-radius:9px;border:1px solid #cfd4da;display:block;}
-.xg-doc .iconfig figcaption{font-size:10.5px;line-height:1.28;color:var(--muted);}
-.xg-doc .iconfig figcaption b{color:#000;}
-.xg-doc .sdfig{margin:0;}
-.xg-doc .sdfig img{width:100%;height:auto;border-radius:8px;border:1px solid #cfd4da;display:block;}
-.xg-doc .sdfig figcaption{font-size:10.6px;line-height:1.3;color:var(--muted);margin-top:4px;}
-.xg-doc .sdfig figcaption b{color:#000;}
-.xg-doc .sublab{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.3px;text-transform:uppercase;margin:0 0 5px;}
-.xg-doc .substep{font-size:12.6px;font-weight:800;color:#33383f;margin:11px 0 10px;}
+.xg-doc .xg-part-1 .setfig figcaption{font-size:11px;line-height:1.28;color:#222;margin-top:3px;font-weight:700;}
+.xg-doc .xg-part-1 .setfig figcaption .v{color:var(--red);font-weight:800;}
+.xg-doc .xg-part-1 .dtwin img{width:100%;height:auto;border-radius:8px;border:1px solid #d8dbe0;display:block;}
+.xg-doc .xg-part-1 .iconfig{margin:0;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;}
+.xg-doc .xg-part-1 .iconfig img{width:78px;height:auto;border-radius:9px;border:1px solid #cfd4da;display:block;}
+.xg-doc .xg-part-1 .iconfig figcaption{font-size:10.5px;line-height:1.28;color:var(--muted);}
+.xg-doc .xg-part-1 .iconfig figcaption b{color:#000;}
+.xg-doc .xg-part-1 .sdfig{margin:0;}
+.xg-doc .xg-part-1 .sdfig img{width:100%;height:auto;border-radius:8px;border:1px solid #cfd4da;display:block;}
+.xg-doc .xg-part-1 .sdfig figcaption{font-size:10.6px;line-height:1.3;color:var(--muted);margin-top:4px;}
+.xg-doc .xg-part-1 .sdfig figcaption b{color:#000;}
+.xg-doc .xg-part-1 .sublab{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.3px;text-transform:uppercase;margin:0 0 5px;}
+.xg-doc .xg-part-1 .substep{font-size:12.6px;font-weight:800;color:#33383f;margin:11px 0 10px;}
+.xg-doc .xg-part-2 .sdfig{margin:0;}
+.xg-doc .xg-part-2 .sdfig img{width:100%;height:auto;border-radius:8px;border:1px solid #cfd4da;display:block;}
+.xg-doc .xg-part-2 .sdfig figcaption{font-size:11px;line-height:1.32;color:var(--muted);margin-top:5px;}
+.xg-doc .xg-part-2 .sdfig figcaption b{color:#000;}
+.xg-doc .xg-part-2 .iconfig{margin:0;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;}
+.xg-doc .xg-part-2 .iconfig img{width:96px;height:auto;border-radius:10px;border:1px solid #cfd4da;display:block;}
+.xg-doc .xg-part-2 .iconfig figcaption{font-size:11px;line-height:1.3;color:var(--muted);}
+.xg-doc .xg-part-2 .iconfig figcaption b{color:#000;}
+.xg-doc .xg-part-2 .mhlfig img{max-height:184px;width:auto;max-width:100%;margin:0 auto;border-radius:8px;border:1px solid #cfd4da;display:block;}
+.xg-doc .xg-part-2 .hmdfig{margin:0;}
+.xg-doc .xg-part-2 .hmdfig img{width:100%;max-width:158px;height:auto;border-radius:10px;border:1px solid #d8dbe0;display:block;margin:0 auto;}
+.xg-doc .xg-part-2 .hmdfig figcaption{font-size:10.5px;color:var(--muted);text-align:center;margin-top:4px;}
+.xg-doc .xg-part-2 .chklist{list-style:none;margin:2px 0 0;padding:0;display:flex;flex-direction:column;gap:7px;}
+.xg-doc .xg-part-2 .chklist li{display:flex;gap:9px;font-size:12.8px;line-height:1.32;align-items:flex-start;}
+.xg-doc .xg-part-2 .chklist li::before{content:"\2713";color:var(--red);font-weight:900;flex:0 0 auto;}
+.xg-doc .xg-part-2 .chklist li b{color:#000;font-weight:800;}
+.xg-doc .xg-part-2 .chklist li.opt::before{content:"\25CB";color:var(--place);font-weight:700;}
+.xg-doc .xg-part-2 .chklist li.opt{color:var(--muted);}
+.xg-doc .xg-part-2 .sublab{font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.3px;text-transform:uppercase;margin:0 0 6px;}
+/* multi-page: stack the sheets, one per printed page */
+.xg-doc{flex-direction:column;align-items:center;gap:24px}
+@media print{.xg-doc{gap:0}.xg-doc .xg-part + .xg-part{break-before:page}}

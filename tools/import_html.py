@@ -14,6 +14,9 @@ What it does:
   * turns the cover-page index ("- Page 4") into clickable links
   * writes docs/documents/<slug>/index.md with front matter the library reads
 
+Pass several files (page1.html page2.html ...) to combine them into one
+document, e.g. the front and back of a double-sided sheet.
+
 Re-running on the same slug overwrites that document. Only the standard
 library is used, so no extra installs are needed.
 """
@@ -148,22 +151,26 @@ def parse_date(text):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument('source', type=Path)
+    ap.add_argument('source', type=Path, nargs='+',
+                    help='one or more HTML files; several files become one document, in order')
     ap.add_argument('--slug', required=True, help='folder/URL name, e.g. quest3-mr-meta-sdk')
     ap.add_argument('--category', default='Quick Start Guides')
     ap.add_argument('--tags', default='', help='comma-separated')
-    ap.add_argument('--title', help='defaults to the <title> of the HTML file')
-    ap.add_argument('--description', help='defaults to the cover page "Additional Notes"')
+    ap.add_argument('--title', help='defaults to the cover title / first heading of the HTML')
+    ap.add_argument('--description', help='defaults to the cover page "Additional Notes" or intro')
     args = ap.parse_args()
 
-    source = args.source.expanduser()
-    if not source.is_file():
-        hint = ''
-        home = str(Path.home())
-        if str(source).startswith(home + home) or str(source).startswith(home + '/Users/'):
-            hint = '\n  "~" already means your home folder - use ~/Downloads/..., not ~/Users/<you>/Downloads/...'
-        sys.exit(f'File not found: {source}{hint}')
-    src = source.read_text(encoding='utf-8')
+    sources = [p.expanduser() for p in args.source]
+    for source in sources:
+        if not source.is_file():
+            hint = ''
+            home = str(Path.home())
+            if str(source).startswith(home + home) or str(source).startswith(home + '/Users/'):
+                hint = '\n  "~" already means your home folder - use ~/Downloads/..., not ~/Users/<you>/Downloads/...'
+            sys.exit(f'File not found: {source}{hint}')
+    srcs = [p.read_text(encoding='utf-8') for p in sources]
+    src = srcs[0]  # metadata comes from the first file
+    multi = len(srcs) > 1
     out_dir = DOCS / args.slug
 
     cover = re.search(r'<h1 class="cover-title">(.*?)</h1>', src, re.S)
@@ -171,7 +178,10 @@ def main():
     if not cover:
         h1 = re.search(r'<h1\b[^>]*>(.*?)</h1>\s*(?:<p class="sub">(.*?)</p>)?', src, re.S)
         if h1:
-            cover = plain(h1.group(1)) + (' — ' + plain(h1.group(2)) if h1.group(2) else '')
+            cover = plain(h1.group(1))
+            # A subtitle names one page of a multi-page set, so only use it for single files
+            if h1.group(2) and not multi:
+                cover += ' — ' + plain(h1.group(2))
     title = args.title or cover or first(r'<title>(.*?)</title>', src) or args.slug
     title = re.sub(r'\s*[-–|]\s*XRIML Guide\s*$', '', title)
     description = args.description or first(
@@ -183,25 +193,44 @@ def main():
 
     own_style = '<section class="page"' not in src
     if own_style:
-        css = '\n'.join(re.findall(r'<style\b[^>]*>(.*?)</style>', src, re.S | re.I))
+        # Style blocks shared by every file apply to the whole document; blocks that
+        # differ are scoped to their own page, so page 2 can't restyle page 1.
+        blocks = [re.findall(r'<style\b[^>]*>(.*?)</style>', t, re.S | re.I) for t in srcs]
+        shared = [b for b in blocks[0] if all(b in other for other in blocks)]
+        css = [scope_css(b) for b in shared]
+        if multi:
+            for n, file_blocks in enumerate(blocks, 1):
+                css += [scope_css(b, f'.xg-doc .xg-part-{n}') for b in file_blocks if b not in shared]
+            css.append('/* multi-page: stack the sheets, one per printed page */\n'
+                       '.xg-doc{flex-direction:column;align-items:center;gap:24px}\n'
+                       '@media print{.xg-doc{gap:0}.xg-doc .xg-part + .xg-part{break-before:page}}')
+        fonts = []
+        for t in srcs:
+            for pair in re.findall(
+                    r'<link\b[^>]*href="(https://fonts\.googleapis\.com/[^"]+)"[^>]*rel="stylesheet"|'
+                    r'<link\b[^>]*rel="stylesheet"[^>]*href="(https://fonts\.googleapis\.com/[^"]+)"', t):
+                line = f'@import url("{html.unescape(pair[0] or pair[1])}");\n'
+                if line not in fonts:
+                    fonts.append(line)
         out_dir.mkdir(parents=True, exist_ok=True)
-        fonts = ''.join(f'@import url("{html.unescape(href)}");\n' for href in re.findall(
-            r'<link\b[^>]*href="(https://fonts\.googleapis\.com/[^"]+)"[^>]*rel="stylesheet"|'
-            r'<link\b[^>]*rel="stylesheet"[^>]*href="(https://fonts\.googleapis\.com/[^"]+)"', src)
-            for href in href if href)
         (out_dir / 'style.css').write_text(
-            fonts + '/* This document\'s own design, scoped by tools/import_html.py */\n' + scope_css(css) + '\n',
-            encoding='utf-8')
+            ''.join(fonts) + '/* This document\'s own design, scoped by tools/import_html.py */\n'
+            + '\n'.join(css) + '\n', encoding='utf-8')
     elif (out_dir / 'style.css').exists():
         (out_dir / 'style.css').unlink()
 
-    body = re.sub(r'<!DOCTYPE[^>]*>|</?(html|head|body)\b[^>]*>|<meta\b[^>]*>|<link\b[^>]*>', '', src, flags=re.I)
-    body = re.sub(r'<(title|style|script)\b.*?</\1>', '', body, flags=re.S | re.I)
+    parts = []
+    for n, t in enumerate(srcs, 1):
+        part = re.sub(r'<!DOCTYPE[^>]*>|</?(html|head|body)\b[^>]*>|<meta\b[^>]*>|<link\b[^>]*>', '', t, flags=re.I)
+        part = re.sub(r'<(title|style|script)\b.*?</\1>', '', part, flags=re.S | re.I).strip()
+        parts.append(f'<div class="xg-part xg-part-{n}" id="page-{n}">\n{part}\n</div>' if multi else part)
+    body = '\n'.join(parts)
     body, n_images = extract_images(body, out_dir / 'images')
     body = add_heading_ids(body)
     body = link_index(body)
     body = body.strip()
     pages = len(re.findall(r'<section class="page"|class="sheet"', body))
+    download = args.slug + '.html' if multi else sources[0].name
 
     tags = [t.strip() for t in args.tags.split(',') if t.strip()]
     fm = ['---', f'title: {yaml_str(title)}', f'description: {yaml_str(description)}',
@@ -215,7 +244,7 @@ def main():
     fm.append(f'pages: {pages}')
     if own_style:
         fm.append('stylesheet: style.css')
-    fm.append(f'source: {yaml_str(source.name)}')
+    fm.append(f'source: {yaml_str(download)}')
     fm.append('tags:' + ('' if tags else ' []'))
     fm += [f'  - {yaml_str(t)}' for t in tags]
     fm += ['hide:', '  - navigation', '  - toc', '---', '']

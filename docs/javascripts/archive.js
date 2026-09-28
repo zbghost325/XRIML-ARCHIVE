@@ -64,15 +64,17 @@ function initLibrary() {
 function initDocument() {
   var select = document.querySelector("[data-xa-jump]");
   if (!select) return;
-  if (!document.querySelector(".xg-doc section.page")) {
-    select.closest(".xa-jump").style.display = "none";  // documents without numbered pages
+  // Numbered guide pages, or the sheets of a multi-file document
+  var pages = document.querySelectorAll(".xg-doc section.page, .xg-doc .xg-part");
+  if (pages.length < 2) {
+    select.closest(".xa-jump").style.display = "none";
     return;
   }
-  document.querySelectorAll(".xg-doc section.page").forEach(function (page) {
+  pages.forEach(function (page, i) {
     var no = page.querySelector(".pageno");
-    var title = page.querySelector(".ptitle");
-    var label = title ? title.textContent.trim() : page.querySelector(".cover-title") ? "Cover & Index" : "";
-    select.add(new Option((no ? no.textContent.trim() : page.id) + (label ? " — " + label : ""), page.id));
+    var title = page.querySelector(".ptitle") || page.querySelector(".titlebar .sub") || page.querySelector("h1");
+    var label = page.querySelector(".cover-title") ? "Cover & Index" : title ? title.textContent.trim() : "";
+    select.add(new Option((no ? no.textContent.trim() : "Page " + (i + 1)) + (label ? " — " + label : ""), page.id));
   });
   select.addEventListener("change", function () {
     if (!select.value) return;

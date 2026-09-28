@@ -1,11 +1,11 @@
 ---
-title: "Meta Quest Link - Login & Setup Flow — Prepare the PC - Fix, Runtime & Codec"
-description: "Do these before opening Meta Horizon Link: run the fix, set the VR runtime, then switch the Link video codec to H.265 in the Oculus Debug Tool. No admin rights needed."
+title: "Meta Quest Link - Login & Setup Flow"
+description: "Double-sided sheet for getting Quest Link working on lab PCs. Page 1: run the fix, set the VR runtime and switch the Link codec to H.265. Page 2: enable the Link settings, connect, and troubleshoot."
 template: document.html
 category: "Troubleshooting"
-pages: 1
+pages: 2
 stylesheet: style.css
-source: "codec-fix.html"
+source: "quest-link-codec-fix.html"
 tags:
   - "Unity"
   - "Quest 3"
@@ -14,6 +14,7 @@ hide:
   - navigation
   - toc
 ---
+<div class="xg-part xg-part-1" id="page-1">
 <div class="sheet">
     <div class="titlebar"><h1 id="meta-quest-link-login-setup-flow">Meta Quest Link - Login &amp; Setup Flow</h1><p class="sub">Prepare the PC - Fix, Runtime &amp; Codec</p></div>
     <div class="body">
@@ -81,3 +82,87 @@ hide:
       <div class="foot"><span>Meta Quest Link - prepare the PC (steps 1-3)</span><span>Page 1 of 2</span></div>
     </div>
   </div>
+</div>
+<div class="xg-part xg-part-2" id="page-2">
+<div class="sheet">
+    <div class="titlebar"><h1 id="meta-quest-link-login-setup-flow-2">Meta Quest Link - Login &amp; Setup Flow</h1><p class="sub">Connect over Link - Settings &amp; Troubleshooting</p></div>
+    <div class="body">
+      <p class="intro">
+        With the PC prepared (page 1), open <b>Meta Horizon Link</b>, turn on the settings below, then connect.
+        If the PC and headset can't find each other, see the <b>troubleshooting</b> at the bottom.
+      </p>
+
+      <!-- STEP 4 -->
+      <div class="step step1">
+        <div class="step-head"><div class="num">4</div>
+          <div class="step-title">Open Meta Horizon Link &amp; sign in<span>Desktop app</span></div></div>
+        <p class="lead" style="margin:2px 0 0;">
+          Launch the <b>Meta Horizon Link</b> desktop app and sign in. The <b>Developer</b> settings below need a
+          <b>Meta developer account</b> - quick sign-up at <b>developers.meta.com/horizon/sign-up</b>.
+        </p>
+      </div>
+
+      <hr class="sep">
+
+      <!-- STEP 5 -->
+      <div class="step step1">
+        <div class="step-head"><div class="num">5</div>
+          <div class="step-title">Enable the Link settings<span>Settings &#9656; General and Developer tabs</span></div></div>
+
+        <p class="sublab">General tab</p>
+        <figure class="sdfig" style="margin-bottom:10px;">
+          <img src="images/img-010.jpg" alt="">
+          <figcaption>Turn on <b>Unknown Sources</b> - lets apps that Meta has not reviewed run over Link.</figcaption>
+        </figure>
+
+        <p class="sublab">Developer tab <span style="text-transform:none;font-weight:600;">(needs a Meta developer account)</span></p>
+        <div class="s2main" style="grid-template-columns:1.5fr 1fr;align-items:start;">
+          <figure class="mhlfig" style="margin:0;"><img src="images/img-011.jpg" alt=""></figure>
+          <div>
+            <ul class="chklist">
+              <li><b>Developer Runtime Features</b></li>
+              <li><b>Passthrough</b> over Meta Horizon Link</li>
+              <li><b>Passthrough Camera API</b> permissions</li>
+              <li><b>Eye tracking</b> over Meta Horizon Link</li>
+              <li><b>Spatial Data</b> over Meta Horizon Link</li>
+              <li class="opt">Natural Facial Expressions <i>(optional)</i></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <hr class="sep">
+
+      <!-- STEP 6 -->
+      <div class="step step1">
+        <div class="step-head"><div class="num">6</div>
+          <div class="step-title">Launch &amp; connect<span>Enable Link on the headset</span></div></div>
+        <div class="s2main" style="grid-template-columns:1.55fr 1fr;align-items:center;">
+          <p class="lead" style="margin:0;">
+            Start your app, <b>SteamVR</b>, or your dev platform. Put on the headset - when the
+            <b>Enable Link</b> prompt appears, select <b>Enable</b>. No prompt? <b>Unplug and replug</b> the cable to make it reappear.
+          </p>
+          <figure class="hmdfig">
+            <img src="images/img-012.png" alt="">
+            <figcaption>The on-headset Enable Link prompt.</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <hr class="sep">
+
+      <!-- Troubleshooting - last -->
+      <div class="step step1">
+        <div class="step-head"><div class="num" style="font-size:22px;">?</div>
+          <div class="step-title">Troubleshooting<span style="text-transform:none;">If the PC and Headset can't find each other / won't connect!</span></div></div>
+        <ul class="rows" style="margin-top:2px;">
+          <li style="align-items:center;"><span class="tag">RE-CHECK</span><div>Confirm <b>Video Codec = H.265</b> and <b>Sliced Encoding = Off</b> in OculusDebugTool.exe (page 1).</div></li>
+          <li style="align-items:center;"><span class="tag">RESTART</span><div>Restart <b>both</b> the PC and the headset - the settings are saved across restarts.</div></li>
+          <li style="align-items:center;"><span class="tag">RECONNECT</span><div>Open <b>Link</b> again; the PC and headset should re-pair.</div></li>
+        </ul>
+      </div>
+
+      <div class="foot"><span>Meta Quest Link - connect over Link (steps 4-6)</span><span>Page 2 of 2</span></div>
+    </div>
+  </div>
+</div>
